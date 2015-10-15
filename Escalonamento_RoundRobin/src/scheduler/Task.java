@@ -1,3 +1,4 @@
+package scheduler;
 
 public class Task {
 
@@ -8,18 +9,18 @@ public class Task {
     public static final String STATUS_FINISHED = "finished";
 
     //variables of control
-    private int ID;
+    private String ID;
     private int date;
     private int totalTime;
     private int elapsedTime = 0;
     private int priority;
     private String status = STATUS_NEW;
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 
@@ -31,7 +32,7 @@ public class Task {
         this.date = date;
     }
 
-    public int getTempoTotal() {
+    public int getTotalTime() {
         return totalTime;
     }
 
@@ -45,13 +46,13 @@ public class Task {
         return elapsedTime;
     }
 
-    public boolean addElapsedTime(int elapsedTime) {
+    public void addElapsedTime(int elapsedTime) {
         this.elapsedTime += elapsedTime;
-        if (this.elapsedTime >= totalTime) {
+        /*if (this.elapsedTime >= totalTime) {
             setStatus(STATUS_FINISHED);
-            return true;
+            return STATUS_FINISHED;
         }
-        return false;
+        return STATUS_READY;*/
     }
 
     public int getPriority() {
