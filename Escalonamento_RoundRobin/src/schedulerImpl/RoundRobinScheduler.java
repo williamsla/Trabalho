@@ -1,10 +1,10 @@
+package schedulerImpl;
 
 import scheduler.Task;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -24,12 +24,21 @@ public class RoundRobinScheduler extends scheduler.Scheduler {
         //gets the tasks that are ready for execution from the list with new tasks
         List<Task> collect = tasks.stream().filter((task) -> (task.getDate() == TIME))
                 .collect(Collectors.toList());
+        //
+        collect.sort(new Comparator<Task>() {
+            @Override
+            public int compare(Task o1, Task o2) {
+                return o1.getPriority() - o2.getPriority();
+            }
+        });
         //Change the status of tasks for READY
         collect.stream().forEach((task) -> {
             task.setStatus(Task.STATUS_READY);
         });
         //Adds the tasks to the queue of execution
         tasksScheduler.addAll(collect);
+        
+
         //Removes it from list of new tasks
         tasks.removeAll(collect);
     }
@@ -40,7 +49,7 @@ public class RoundRobinScheduler extends scheduler.Scheduler {
         task.setStatus(Task.STATUS_RUNNING);
         for (int q = 0; q < quantum; q++) {
             task.addElapsedTime(1);
-            generateLog();
+            generateLog(task);
             TIME++;
             addTasksToRun();
             if (task.getElapsedTime() >= task.getTotalTime()) {
@@ -49,11 +58,5 @@ public class RoundRobinScheduler extends scheduler.Scheduler {
             }
         }
         task.setStatus(Task.STATUS_READY);
-    }
-
-    public static void main(String[] args) throws FileNotFoundException, IOException, InterruptedException {
-        RoundRobinScheduler scheduler = new RoundRobinScheduler("/home/williams/Projetos/Trabalho/Escalonamento_RoundRobin/src/input.txt");
-        scheduler.loadTasksFromInput();
-        scheduler.run();
     }
 }

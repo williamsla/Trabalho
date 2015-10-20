@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * @author williams
+ * @author williams e felipe
  */
 public abstract class Scheduler {
 
@@ -42,7 +42,7 @@ public abstract class Scheduler {
             //creates a buffer from the file input
             BufferedReader br = new BufferedReader(reader);
 
-            int quantityOfTasks = 0;
+            int quantityOfTasks = 1;
             while (br.ready()) {
                 String ID = "P" + quantityOfTasks;
                 IDs.add(ID);
@@ -79,19 +79,19 @@ public abstract class Scheduler {
         while (!tasks.isEmpty() || !tasksScheduler.isEmpty()) {
             addTasksToRun();
             for (int x = 0; x < tasksScheduler.size(); x++) {
-                Task task = tasksScheduler.get(x);
+                Task task = tasksScheduler.remove(x);
+                x--;
                 //executes a task
                 scheduler(task);
                 if (task.getStatus().equals(Task.STATUS_FINISHED)) {
-                    tasksScheduler.remove(task);
-                    x--;
+                    continue;                    
                 }
+                tasksScheduler.add(task);
             }
         }
-
     }
 
-    public void generateLog() {
+    public void generateLog(Task task) {
         String t1 = "";
         String t2 = "";
 
@@ -111,6 +111,9 @@ public abstract class Scheduler {
             Optional<Task> optionalTask = tasksScheduler.stream().filter((t) -> (t.getID().equals(id))).findFirst();
             if (optionalTask.isPresent()) {
                 String statusSymbol = optionalTask.get().getStatusSymbol();
+                log.append(statusSymbol);
+            } else if (id.equals(task.getID())) {
+                String statusSymbol = task.getStatusSymbol();
                 log.append(statusSymbol);
             } else {
                 log.append("  ");
