@@ -45,7 +45,7 @@ public class RoundRobin extends scheduler.Scheduler {
         tasks.removeAll(collect);
     }
 
-    //handles the execution of a task
+    //Runs the task to end the quantum, or time it needs
     @Override
     public void scheduler(Task task) {
         task.setStatus(Task.STATUS_RUNNING);

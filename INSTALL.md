@@ -9,5 +9,5 @@ Inside the folder src, run:
 -> javac Main.java
 -> java Main ./input.txt (*)
 
-(*) can be fcfs or rr.
+(*) can be some scheduler: fcfs or rr.
 

@@ -41,6 +41,7 @@ public class FCFS extends scheduler.Scheduler {
         tasks.removeAll(collect);
     }
 
+	//Runs the task until the time it needs
     @Override
     public void scheduler(Task task) {
         task.setStatus(Task.STATUS_RUNNING);
