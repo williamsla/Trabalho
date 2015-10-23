@@ -3,7 +3,6 @@ package scheduler;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import scheduler.Task;
 
 /**
  * @author felipe
@@ -14,6 +13,11 @@ public class FCFS extends scheduler.Scheduler {
         super(input_path);
     }
 
+    /**
+     * remove as tarefas que iniciam no tempo decorrido até o momento, e as
+     * adiciona na lista de escalonamento, nesse caso, as tarefas mudam para o
+     * estado "ready"
+     */
     @Override
     public void addTasksToRun() {
         //gets the tasks that are ready for execution from the list with new tasks

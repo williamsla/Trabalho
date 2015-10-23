@@ -1,8 +1,5 @@
 package scheduler;
 
-import scheduler.Task;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,16 +12,22 @@ public class RoundRobinScheduler extends scheduler.Scheduler {
     //quantum in seconds
     int quantum = 2;
 
+    //receives an input file with the process properties
     public RoundRobinScheduler(String input_path) {
         super(input_path);
     }
 
+    /**
+     * remove as tarefas que iniciam no tempo decorrido até o momento, e as
+     * adiciona na lista de escalonamento, nesse caso, as tarefas mudam para o
+     * estado "ready"
+     */
     @Override
     public void addTasksToRun() {
         //gets the tasks that are ready for execution from the list with new tasks
         List<Task> collect = tasks.stream().filter((task) -> (task.getDate() == TIME))
                 .collect(Collectors.toList());
-        //
+        //sort the tasks inserted. The sort is based in "priority" value for all the tasks.
         collect.sort(new Comparator<Task>() {
             @Override
             public int compare(Task o1, Task o2) {
@@ -37,7 +40,6 @@ public class RoundRobinScheduler extends scheduler.Scheduler {
         });
         //Adds the tasks to the queue of execution
         tasksScheduler.addAll(collect);
-        
 
         //Removes it from list of new tasks
         tasks.removeAll(collect);

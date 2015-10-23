@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * @author williams e felipe
@@ -33,15 +32,18 @@ public abstract class Scheduler {
         input = new File(input_path);
         output = new File(input.getParent() + "/output.txt");
         if (output.exists()) {
+            //removes the existing file from previous run
             output.delete();
         }
         try {
+            //creates a new file for output
             output.createNewFile();
         } catch (IOException ex) {
             Logger.getLogger(Scheduler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    //Loads the process from input file to memory
     public void loadTasksFromInput() {
 
         try {
@@ -91,7 +93,7 @@ public abstract class Scheduler {
                 //executes a task
                 scheduler(task);
                 if (task.getStatus().equals(Task.STATUS_FINISHED)) {
-                    continue;                    
+                    continue;
                 }
                 tasksScheduler.add(task);
             }
@@ -132,7 +134,6 @@ public abstract class Scheduler {
     }
 
     public void writeToFile(String text) {
-        System.out.println(text);
         try {
             FileWriter fw = new FileWriter(output, true);
             fw.write(text);
