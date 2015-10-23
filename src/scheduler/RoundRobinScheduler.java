@@ -1,4 +1,4 @@
-package schedulerImpl;
+package scheduler;
 
 import scheduler.Task;
 import java.io.FileNotFoundException;

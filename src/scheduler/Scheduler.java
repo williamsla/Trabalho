@@ -32,7 +32,14 @@ public abstract class Scheduler {
     public Scheduler(String input_path) {
         input = new File(input_path);
         output = new File(input.getParent() + "/output.txt");
-
+        if (output.exists()) {
+            output.delete();
+        }
+        try {
+            output.createNewFile();
+        } catch (IOException ex) {
+            Logger.getLogger(Scheduler.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void loadTasksFromInput() {

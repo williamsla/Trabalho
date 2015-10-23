@@ -1,5 +1,5 @@
-import schedulerImpl.FCFS;
-import schedulerImpl.RoundRobinScheduler;
+import scheduler.FCFS;
+import scheduler.RoundRobinScheduler;
 import scheduler.Scheduler;
 
 /**
@@ -11,9 +11,9 @@ public class Main {
         String file = args[0];
         String param = args[1];
         Scheduler scheduler = null;
-        if (param.equals("FCFS")) {
+        if (param.equals("fcfs")) {
             scheduler = new FCFS(file);
-        } else if (param.equals("RoundRobin")) {
+        } else if (param.equals("rr")) {
             scheduler = new RoundRobinScheduler(file);
         }
         try {
