@@ -10,11 +10,16 @@ public class Task {
     public static final String STATUS_FINISHED = "finished";
 
     //variables of control
-    //properties of task
+
+	//identification
     private String ID;
+	//time that will be created
     private int date;
+	//time it takes the processor
     private int totalTime;
+	//time spent on the processor
     private int elapsedTime = 0;
+	//priority. The smaller, have higher priority
     private int priority;
     private String status = STATUS_NEW;
 

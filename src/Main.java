@@ -1,5 +1,5 @@
 import scheduler.FCFS;
-import scheduler.RoundRobinScheduler;
+import scheduler.RoundRobin;
 import scheduler.Scheduler;
 
 /**
@@ -14,7 +14,7 @@ public class Main {
         if (param.equals("fcfs")) {
             scheduler = new FCFS(file);
         } else if (param.equals("rr")) {
-            scheduler = new RoundRobinScheduler(file);
+            scheduler = new RoundRobin(file);
         }
         try {
             scheduler.loadTasksFromInput();

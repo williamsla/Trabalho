@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author felipe
+ * @author williams
  */
-public class FCFS extends scheduler.Scheduler {
+public class RoundRobin extends scheduler.Scheduler {
 
-    public FCFS(String input_path) {
+    //quantum in seconds
+    int quantum = 2;
+
+    //receives an input file with the process properties
+    public RoundRobin(String input_path) {
         super(input_path);
     }
 
@@ -20,36 +24,41 @@ public class FCFS extends scheduler.Scheduler {
      */
     @Override
     public void addTasksToRun() {
-        //Gets the tasks that are ready for execution from the list with new tasks
+        //gets the tasks that are ready for execution from the list with new tasks
         List<Task> collect = tasks.stream().filter((task) -> (task.getDate() == TIME))
                 .collect(Collectors.toList());
+        //sort the tasks inserted. The sort is based in "priority" value for all the tasks.
+        collect.sort(new Comparator<Task>() {
+            @Override
+            public int compare(Task o1, Task o2) {
+                return o1.getPriority() - o2.getPriority();
+            }
+        });
         //Change the status of tasks for READY
         collect.stream().forEach((task) -> {
             task.setStatus(Task.STATUS_READY);
         });
         //Adds the tasks to the queue of execution
         tasksScheduler.addAll(collect);
-        //return 
-        tasksScheduler.sort(new Comparator<Task>() {
-			//Look for who have minor priority
-            @Override
-            public int compare(Task o1, Task o2) {
-                return o1.getPriority() - o2.getPriority();
-            }
-        });
+
         //Removes it from list of new tasks
         tasks.removeAll(collect);
     }
 
+    //handles the execution of a task
     @Override
     public void scheduler(Task task) {
         task.setStatus(Task.STATUS_RUNNING);
-        while (task.getElapsedTime() < task.getTotalTime()) {
+        for (int q = 0; q < quantum; q++) {
             task.addElapsedTime(1);
             generateLog(task);
             TIME++;
             addTasksToRun();
+            if (task.getElapsedTime() >= task.getTotalTime()) {
+                task.setStatus(Task.STATUS_FINISHED);
+                return;
+            }
         }
-        task.setStatus(Task.STATUS_FINISHED);
+        task.setStatus(Task.STATUS_READY);
     }
 }
